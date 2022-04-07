@@ -124,16 +124,3 @@ if (project.property("firebase-app.skipIosTests") == "true") {
         if (it.name.contains("ios", true) && it.name.contains("test", true)) { it.enabled = false }
     }
 }
-
-if (project.property("firebase-app.skipJsTests") == "true") {
-    tasks.forEach {
-        if (it.name.contains("js", true) && it.name.contains("test", true)) { it.enabled = false }
-    }
-}
-
-signing {
-    val signingKey: String? by project
-    val signingPassword: String? by project
-    useInMemoryPgpKeys(signingKey, signingPassword)
-    sign(publishing.publications)
-}

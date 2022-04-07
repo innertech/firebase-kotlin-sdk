@@ -223,16 +223,16 @@ If you are building a Kotlin multiplatform library which will be consumed from J
 
 ```json
 "dependencies": {
-  "@gitlive/firebase-auth": "1.8.0",
-  "@gitlive/firebase-config": "1.8.0",
-  "@gitlive/firebase-database": "1.8.0",
-  "@gitlive/firebase-firestore": "1.8.0",
-  "@gitlive/firebase-functions": "1.8.0",
-  "@gitlive/firebase-installations": "1.8.0",
-  "@gitlive/firebase-messaging": "1.8.0",
-  "@gitlive/firebase-storage": "1.8.0"
-  "@gitlive/firebase-perf": "1.8.0"
-  "@gitlive/firebase-crashlytics": "1.8.0"
+  "@gitlive/firebase-auth": "1.8.1.innertech-1",
+  "@gitlive/firebase-config": "1.8.1.innertech-1",
+  "@gitlive/firebase-database": "1.8.1.innertech-1",
+  "@gitlive/firebase-firestore": "1.8.1.innertech-1",
+  "@gitlive/firebase-functions": "1.8.1.innertech-1",
+  "@gitlive/firebase-installations": "1.8.1.innertech-1",
+  "@gitlive/firebase-messaging": "1.8.1.innertech-1",
+  "@gitlive/firebase-storage": "1.8.1.innertech-1",
+  "@gitlive/firebase-perf": "1.8.1.innertech-1",
+  "@gitlive/firebase-crashlytics": "1.8.1.innertech-1"
 }
 ```
 

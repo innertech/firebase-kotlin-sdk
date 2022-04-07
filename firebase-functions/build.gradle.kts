@@ -161,9 +161,4 @@ if (project.property("firebase-functions.skipIosTests") == "true") {
     }
 }
 
-signing {
-    val signingKey: String? by project
-    val signingPassword: String? by project
-    useInMemoryPgpKeys(signingKey, signingPassword)
-    sign(publishing.publications)
-}
+

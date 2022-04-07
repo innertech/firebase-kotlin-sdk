@@ -219,11 +219,13 @@ subprojects {
     configure<PublishingExtension> {
 
         repositories {
-            maven {
-                url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2")
+            maven("https://maven.pkg.github.com/innertech/firebase-kotlin-sdk") {
+                name = "GitHub"
                 credentials {
-                    username = project.findProperty("sonatypeUsername") as String? ?: System.getenv("sonatypeUsername")
-                    password = project.findProperty("sonatypePassword") as String? ?: System.getenv("sonatypePassword")
+                    val githubRepoUser: String by project
+                    val githubRepoToken: String by project
+                    username = githubRepoUser
+                    password = githubRepoToken
                 }
             }
         }

@@ -48,6 +48,8 @@ kotlin {
 
     val supportIosTarget = project.property("skipIosTarget") != "true"
 
+    jvm()
+
     if (supportIosTarget) {
         ios()
         iosSimulatorArm64()
@@ -93,6 +95,13 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 api("com.google.firebase:firebase-common")
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+                api("com.google.firebase:firebase-admin:8.1.0")
+                api("com.google.firebase:firebase-firestore-ktx:23.0.4")
             }
         }
 

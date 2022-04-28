@@ -23,13 +23,13 @@ expect class FirebaseUser {
     suspend fun linkWithCredential(credential: AuthCredential): AuthResult
     suspend fun reauthenticate(credential: AuthCredential)
     suspend fun reauthenticateAndRetrieveData(credential: AuthCredential): AuthResult
-    suspend fun sendEmailVerification(actionCodeSettings: ActionCodeSettings? = null)
+    suspend fun sendEmailVerification(actionCodeSettings: ActionCodeSettings?)
     suspend fun unlink(provider: String): FirebaseUser?
     suspend fun updateEmail(email: String)
     suspend fun updatePassword(password: String)
     suspend fun updatePhoneNumber(credential: PhoneAuthCredential)
     suspend fun updateProfile(displayName: String?, photoUrl: String?)
-    suspend fun verifyBeforeUpdateEmail(newEmail: String, actionCodeSettings: ActionCodeSettings? = null)
+    suspend fun verifyBeforeUpdateEmail(newEmail: String, actionCodeSettings: ActionCodeSettings?)
 }
 
 expect class UserInfo {

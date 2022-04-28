@@ -100,8 +100,9 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                api("com.google.firebase:firebase-admin:8.1.0")
-                api("com.google.firebase:firebase-firestore-ktx:23.0.4")
+                api("com.google.api:api-common:2.1.5")
+                api("com.google.firebase:firebase-common:20.1.0")
+                api("com.google.guava:guava:30.1.1-jre")
             }
         }
 

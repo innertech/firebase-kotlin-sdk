@@ -5,16 +5,10 @@
 @file:JvmName("jvm")
 package dev.gitlive.firebase.auth
 
-import com.google.firebase.auth.ActionCodeEmailInfo
-import com.google.firebase.auth.ActionCodeMultiFactorInfo
-import com.google.firebase.auth.ActionCodeResult.*
-import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.FirebaseApp
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.tasks.await
 
 actual val Firebase.auth
     get() = FirebaseAuth(com.google.firebase.auth.FirebaseAuth.getInstance())
@@ -26,8 +20,9 @@ actual class FirebaseAuth internal constructor(val jvm: com.google.firebase.auth
     actual val currentUser: FirebaseUser?
         get() = jvm.currentUser?.let { FirebaseUser(it) }
 
-    actual val authStateChanged: Flow<FirebaseUser?> get() = callbackFlow {
-        val listener = object : AuthStateListener {
+    actual val authStateChanged: Flow<FirebaseUser?>
+        get() = callbackFlow {
+        val listener = object : com.google.firebase.auth.FirebaseAuth.AuthStateListener {
             override fun onAuthStateChanged(auth: com.google.firebase.auth.FirebaseAuth) {
                 trySend(auth.currentUser?.let { FirebaseUser(it) })
             }
@@ -130,20 +125,11 @@ actual class AuthTokenResult(val jvm: com.google.firebase.auth.GetTokenResult) {
         get() = jvm.token
 }
 
-internal fun ActionCodeSettings.toAndroid() = com.google.firebase.auth.ActionCodeSettings.newBuilder()
+internal fun ActionCodeSettings.toJvm() = com.google.firebase.auth.ActionCodeSettings.newBuilder()
     .setUrl(url)
-    .also { jvmPackageName?.run { it.setAndroidPackageName(packageName, installIfNotAvailable, minimumVersion) } }
+    .also { androidPackageName?.run { it.setAndroidPackageName(packageName, installIfNotAvailable, minimumVersion) } }
     .also { dynamicLinkDomain?.run { it.setDynamicLinkDomain(this) } }
     .setHandleCodeInApp(canHandleCodeInApp)
     .also { iOSBundleId?.run { it.setIOSBundleId(this) } }
     .build()
 
-actual typealias FirebaseAuthException = com.google.firebase.auth.FirebaseAuthException
-actual typealias FirebaseAuthActionCodeException = com.google.firebase.auth.FirebaseAuthActionCodeException
-actual typealias FirebaseAuthEmailException = com.google.firebase.auth.FirebaseAuthEmailException
-actual typealias FirebaseAuthInvalidCredentialsException = com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-actual typealias FirebaseAuthInvalidUserException = com.google.firebase.auth.FirebaseAuthInvalidUserException
-actual typealias FirebaseAuthMultiFactorException = com.google.firebase.auth.FirebaseAuthMultiFactorException
-actual typealias FirebaseAuthRecentLoginRequiredException = com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
-actual typealias FirebaseAuthUserCollisionException = com.google.firebase.auth.FirebaseAuthUserCollisionException
-actual typealias FirebaseAuthWebException = com.google.firebase.auth.FirebaseAuthWebException

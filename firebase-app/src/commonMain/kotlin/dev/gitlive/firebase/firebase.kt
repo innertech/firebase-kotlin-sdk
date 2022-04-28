@@ -28,16 +28,16 @@ expect val Firebase.app: FirebaseApp
 expect fun Firebase.app(name: String): FirebaseApp
 
 /** Returns all firebase app instances. */
-expect fun Firebase.apps(context: Any? = null): List<FirebaseApp>
+expect fun Firebase.apps(context: Any?): List<FirebaseApp>
 
 /** Initializes and returns a FirebaseApp. */
-expect fun Firebase.initialize(context: Any? = null): FirebaseApp?
+expect fun Firebase.initialize(context: Any?): FirebaseApp?
 
 /** Initializes and returns a FirebaseApp. */
-expect fun Firebase.initialize(context: Any? = null, options: FirebaseOptions): FirebaseApp
+expect fun Firebase.initialize(context: Any?, options: FirebaseOptions): FirebaseApp
 
 /** Initializes and returns a FirebaseApp. */
-expect fun Firebase.initialize(context: Any? = null, options: FirebaseOptions, name: String): FirebaseApp
+expect fun Firebase.initialize(context: Any?, options: FirebaseOptions, name: String): FirebaseApp
 
 /** Returns options of default FirebaseApp */
 val Firebase.options: FirebaseOptions

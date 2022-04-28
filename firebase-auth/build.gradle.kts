@@ -13,6 +13,11 @@ plugins {
     //id("com.quittle.android-emulator") version "0.2.0"
 }
 
+repositories {
+    google()
+    mavenCentral()
+}
+
 //buildscript {
 //    repositories {
 //        google()
@@ -79,6 +84,8 @@ kotlin {
     android {
         publishAllLibraryVariants()
     }
+
+    jvm()
 
     val supportIosTarget = project.property("skipIosTarget") != "true"
     if (supportIosTarget) {
@@ -166,6 +173,12 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 api("com.google.firebase:firebase-auth")
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+                api("com.google.firebase:firebase-auth:21.0.1")
             }
         }
 

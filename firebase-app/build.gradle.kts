@@ -142,6 +142,8 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
+                api("com.google.firebase:firebase-common:20.1.0")
+                api("com.google.auth:google-auth-library-oauth2-http:1.6.0")
                 api("com.google.firebase:firebase-admin:8.1.0")
                 //api("com.google.firebase:firebase-ktx:23.0.4")
             }

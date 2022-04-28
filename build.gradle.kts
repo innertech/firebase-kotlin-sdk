@@ -155,25 +155,24 @@ subprojects {
             }
         }
 
-        val carthageTasks = if (projectDir.resolve("src/nativeInterop/cinterop/Cartfile").exists()) { // skipping firebase-common module
-            listOf("bootstrap", "update").map {
+        if (projectDir.resolve("src/nativeInterop/cinterop/Cartfile").exists()) { // skipping firebase-common module
+            listOf("bootstrap", "update").forEach {
                 task<Exec>("carthage${it.capitalize()}") {
                     group = "carthage"
                     executable = "carthage"
                     args(
                         it,
                         "--project-directory", projectDir.resolve("src/nativeInterop/cinterop"),
-                        "--platform", "iOS"
+                        "--platform", "iOS",
+                        "--cache-builds"
                     )
                 }
             }
-        } else emptyList()
+        }
 
         if (Os.isFamily(Os.FAMILY_MAC)) {
             withType(org.jetbrains.kotlin.gradle.tasks.CInteropProcess::class) {
-                if (carthageTasks.isNotEmpty()) {
-                    dependsOn("carthageBootstrap")
-                }
+                dependsOn("carthageBootstrap")
             }
         }
 
@@ -232,6 +231,8 @@ subprojects {
 
         publications.all {
             this as MavenPublication
+
+            println("Setting up publishing for $name")
 
             pom {
                 name.set("firebase-kotlin-sdk")

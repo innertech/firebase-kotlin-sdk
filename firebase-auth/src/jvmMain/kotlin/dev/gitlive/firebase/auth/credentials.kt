@@ -2,26 +2,24 @@
  * Copyright (c) 2020 GitLive Ltd.  Use of this source code is governed by the Apache 2.0 license.
  */
 
+@file:JvmName("jvm")
 package dev.gitlive.firebase.auth
 
 import android.app.Activity
-import com.google.firebase.FirebaseException
-import com.google.firebase.auth.OAuthProvider
-import com.google.firebase.auth.PhoneAuthProvider
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.concurrent.TimeUnit
 
-actual open class AuthCredential(open val android: com.google.firebase.auth.AuthCredential) {
+actual open class AuthCredential(open val jvm: com.google.firebase.auth.AuthCredential) {
     actual val providerId: String
-        get() = android.provider
+        get() = jvm.provider
 }
 
-actual class PhoneAuthCredential(override val android: com.google.firebase.auth.PhoneAuthCredential) : AuthCredential(android)
+actual class PhoneAuthCredential(override val jvm: com.google.firebase.auth.PhoneAuthCredential) : AuthCredential(jvm)
 
-actual class OAuthCredential(override val android: com.google.firebase.auth.OAuthCredential) : AuthCredential(android)
+actual class OAuthCredential(override val jvm: com.google.firebase.auth.OAuthCredential) : AuthCredential(jvm)
 
 actual object EmailAuthProvider {
     actual fun credential(
@@ -47,7 +45,7 @@ actual object GoogleAuthProvider {
     }
 }
 
-actual class OAuthProvider(val android: com.google.firebase.auth.OAuthProvider) {
+actual class OAuthProvider(val jvm: com.google.firebase.auth.OAuthProvider) {
 
     actual constructor(
         provider: String,
@@ -64,7 +62,7 @@ actual class OAuthProvider(val android: com.google.firebase.auth.OAuthProvider) 
 
     actual companion object {
         actual fun credential(providerId: String, accessToken: String?, idToken: String?, rawNonce: String?): OAuthCredential {
-            val builder = OAuthProvider.newCredentialBuilder(providerId)
+            val builder =  com.google.firebase.auth.OAuthProvider.newCredentialBuilder(providerId)
             accessToken?.let { builder.setAccessToken(it) }
             idToken?.let { builder.setIdToken(it) }
             rawNonce?.let { builder.setIdTokenWithRawNonce(idToken!!, it)  }
@@ -73,7 +71,7 @@ actual class OAuthProvider(val android: com.google.firebase.auth.OAuthProvider) 
     }
 }
 
-actual class PhoneAuthProvider(val android: com.google.firebase.auth.PhoneAuthProvider) {
+actual class PhoneAuthProvider(val jvm: com.google.firebase.auth.PhoneAuthProvider) {
 
     actual constructor(auth: FirebaseAuth) : this(com.google.firebase.auth.PhoneAuthProvider.getInstance(auth.android))
 
@@ -82,10 +80,10 @@ actual class PhoneAuthProvider(val android: com.google.firebase.auth.PhoneAuthPr
     actual suspend fun verifyPhoneNumber(phoneNumber: String, verificationProvider: PhoneVerificationProvider): AuthCredential = coroutineScope {
         val response = CompletableDeferred<Result<AuthCredential>>()
         val callback = object :
-            PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
-            override fun onCodeSent(verificationId: String, forceResending: PhoneAuthProvider.ForceResendingToken) {
-                verificationProvider.codeSent { android.verifyPhoneNumber(phoneNumber, verificationProvider.timeout, verificationProvider.unit, verificationProvider.activity, this, forceResending) }
+            override fun onCodeSent(verificationId: String, forceResending:  com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken) {
+                verificationProvider.codeSent { jvm.verifyPhoneNumber(phoneNumber, verificationProvider.timeout, verificationProvider.unit, verificationProvider.activity, this, forceResending) }
             }
 
             override fun onCodeAutoRetrievalTimeOut(verificationId: String) {
@@ -108,7 +106,7 @@ actual class PhoneAuthProvider(val android: com.google.firebase.auth.PhoneAuthPr
             }
 
         }
-        android.verifyPhoneNumber(phoneNumber, verificationProvider.timeout, verificationProvider.unit, verificationProvider.activity, callback)
+        jvm.verifyPhoneNumber(phoneNumber, verificationProvider.timeout, verificationProvider.unit, verificationProvider.activity, callback)
 
         response.await().getOrThrow()
     }
@@ -125,3 +123,13 @@ actual interface PhoneVerificationProvider {
 actual object TwitterAuthProvider {
     actual fun credential(token: String, secret: String): AuthCredential = AuthCredential(com.google.firebase.auth.TwitterAuthProvider.getCredential(token, secret))
 }
+
+actual typealias FirebaseAuthException = com.google.firebase.auth.FirebaseAuthException
+actual typealias FirebaseAuthActionCodeException = com.google.firebase.auth.FirebaseAuthActionCodeException
+actual typealias FirebaseAuthEmailException = com.google.firebase.auth.FirebaseAuthEmailException
+actual typealias FirebaseAuthInvalidCredentialsException = com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+actual typealias FirebaseAuthInvalidUserException = com.google.firebase.auth.FirebaseAuthInvalidUserException
+actual typealias FirebaseAuthMultiFactorException = com.google.firebase.auth.FirebaseAuthMultiFactorException
+actual typealias FirebaseAuthRecentLoginRequiredException = com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
+actual typealias FirebaseAuthUserCollisionException = com.google.firebase.auth.FirebaseAuthUserCollisionException
+actual typealias FirebaseAuthWebException = com.google.firebase.auth.FirebaseAuthWebException
